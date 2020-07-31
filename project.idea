@@ -1,0 +1,64 @@
+% Hydroelectric Power Plant Problem
+% by Huyen N. Nguyen, project for class CS 4331/5331 
+% Special Topics: Intelligent Planning and Diagnosis
+% Summer II 2020 - Texas Tech Computer Science
+
+% An agent is controlling a mini hydroelectric power plant used for generating 
+% electricity with a gate toggle, artificial rain, and artificial sunshine. 
+% The system requires a reservoir connecting to a powerhouse, where the electricity 
+% is generated. The reservoir can be full or not full. Water contained in the 
+% reservoir is forced through a gate. Sunshine causes the reservoir to be empty 
+% (not full) and the weather to be dry. Rain causes the weather to not dry. 
+% Rain causes the reservoir to be full if the gate is not opened. A toggle controls 
+% the gate. When the agent switches the toggle, the gate will change its position 
+% from open to closed or closed to open, then water will flow down through the gate. 
+% Toggle causes water to flow and reservoir to be not full if reservoir is full and 
+% gate is not opened. When water flows, the resulting high pressure turns a turbine, 
+% converted into power by the generator. The resulting power leaves the powerhouse 
+% via cables that carry it over long distances; there is electricity on the cables if 
+% power is available and the weather is dry. The goal is to have electricity on cables.
+
+% Actions: 
+	rain, sun, toggle
+
+% Fluents: 
+	full, dry, opened, flow, electric
+
+% Dynamic causal laws:
+sun causes -full, dry
+rain causes -dry
+rain causes full if -opened
+toggle causes opened if -opened
+toggle causes -opened if opened
+toggle causes flow if full, -opened
+toggle causes -full if full, -opened
+
+% State constraints:
+-full if opened
+-full if dry
+electric if flow, dry
+-electric if -flow
+-electric if -dry
+
+% Initial condition:
+% The reservoir is initially not full. The weather is dry.
+% The gate is opened. There is no flow, no electric on the cables.
+
+-holds(full,0).
+holds(dry,0).
+holds(opened,0).
+-holds(flow,0).
+-holds(electric,0).
+
+% Goal is there is electric on the cables.
+goal(T) :- holds(electric,T), step(T).
+
+% Heuristics
+% There is no point to toggle after the sun shines, because there is no water
+:- occurs(sun,T), occurs(toggle, T+1), step(T), step(T+1).
+
+% There should not be rain right after sun:
+:- occurs(sun,T), occurs(rain,T+1), time(T), time(T+1).
+
+% There should not be sun right after rain:
+:- occurs(rain,T), occurs(sun,T+1), time(T), time(T+1).
