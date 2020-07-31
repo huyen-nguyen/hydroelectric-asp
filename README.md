@@ -2,8 +2,11 @@
 
 Planning domain models via action languages translated to Answer sets.
 
+
 An agent is controlling a mini hydroelectric power plant used for generating electricity with a gate toggle, artificial rain and sunshine. 
 The system requires a reservoir connecting to a powerhouse, where the electricity is generated.
+
+
 The reservoir can be full or not full. Water contained in the reservoir is forced through a gate.
 Sunshine causes the reservoir to be empty (not full) and the weather to be dry. 
 Rain causes the weather not dry.
