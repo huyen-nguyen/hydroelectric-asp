@@ -5,7 +5,7 @@
 
 % Heuristics 
 
-% There is no point to toggle after the sun shines, because there is no water
+% There is no point to toggle after the sun shines, because reservoir is not full
 :- occurs(sun,T), occurs(toggle,T+1), time(T), time(T+1).
 
 % There should not be rain right after sun:
@@ -20,7 +20,7 @@ holds(F,T+1) :- fluent(F), time(T), holds(F,T), not -holds(F,T+1).
 -holds(F,T+1) :- fluent(F), time(T), -holds(F,T), not holds(F,T+1).
 
 % In this instance the reservoir is initially not full. The weather is dry. 
-% The gate is opened. There is no flow, no electric on the cables.
+% The gate is opened. There is no flow, no electricity on the cables.
 
 -holds(full,0).
 holds(dry,0).
@@ -28,7 +28,7 @@ holds(opened,0).
 -holds(flow,0).
 -holds(electric,0).
 
-% Goal is there is electric on the cables.
+% Goal is to have electricity on the cables.
 
 goal(T) :- holds(electric,T), time(T).
 

@@ -5,13 +5,11 @@
 % Special Topics: Intelligent Planning and Diagnosis
 % Summer II 2020 - Texas Tech Computer Science
 
-% Original by Dr. Richard Watson, Texas Tech Computer Science Department
-
-% Requires that the goal being true at time T is specified in the problem instance.
+% Requires that the goal being true at some time T is specified
+% in the problem instance.
 
 goal :- goal(T), time(T).
 :- not goal.
 1{occurs(A,T):action(A)}1 :- not goal(T), time(T).
 
-%#show occurs/2.
-
+% #show occurs/2.
